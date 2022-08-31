@@ -4,7 +4,8 @@ import React from 'react';
 const Tentang = () => {
   return (
     <View>
-      <Text>Tampilan Tentang Pembuat</Text>
+      <Text>Halaman Tentang Pembuat</Text>
+      <Text>Isinya data-data Mas Fahrian</Text>
     </View>
   );
 };

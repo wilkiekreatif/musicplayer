@@ -1,8 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import Pdf from 'react-native-pdf';
-// rimport Icon from '../../assets/png/music.png';
-// import sourcepdf from '../../assets/pdf/tentangmusikpanting.pdf';
 
 const source = {uri: 'bundle-assets://tentangmusikpanting.pdf'};
 
@@ -52,6 +50,7 @@ const style = StyleSheet.create({
     borderRadius: 15,
     height: '87%',
     width: '90%',
+    // padding: -10,
   },
   pdf: {
     borderRadius: 50,

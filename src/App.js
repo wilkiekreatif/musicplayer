@@ -1,17 +1,13 @@
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import Mainmenu from './pages/Mainmenu';
-import Splash from './pages/Splash';
-import Musikpanting from './pages/Musikpanting';
-import Musicplayer from './pages/Musicplayer';
+import Router from './router';
+// import Splash from './pages/Splash';
 
 export default function App() {
   return (
     <NavigationContainer>
-      {/* <Mainmenu /> */}
-      {/* <Musikpanting /> */}
       {/* <Splash /> */}
-      <Musicplayer />
+      <Router />
     </NavigationContainer>
   );
 }

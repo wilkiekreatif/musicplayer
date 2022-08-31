@@ -1,34 +1,39 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
-import Icon from '../../assets/png/icon.png';
+import Icon from '../../assets/png/music.png';
 import MainBtn from './MainBtn';
 import Icon1 from '../../assets/png/icon1.png';
 import Icon2 from '../../assets/png/icon2.png';
 import Icon3 from '../../assets/png/icon3.png';
+import LinearGradient from 'react-native-linear-gradient';
 
-const Mainmenu = () => {
+const Mainmenu = ({navigation}) => {
+  const handleGoTo = screen => {
+    navigation.navigate(screen);
+  };
   return (
-    <View style={style.latar}>
+    // <View style={style.latar}>
+    <LinearGradient colors={['#243B55', '#141E30']} style={style.latar}>
       <View style={style.header}>
         <Image source={Icon} style={style.icon} />
-        <Text style={style.fontcolor1}>PANTING MUSIC PLAYER</Text>
         <MainBtn
           title="TENTANG MUSIK PANTING"
           image={Icon1}
-          // onPress={() => handleGoTo('')}
+          onPress={() => handleGoTo('MusikPanting')}
         />
         <MainBtn
           title="KUMPULAN MUSIK PANTING"
           image={Icon2}
-          // onPress={() => handleGoTo('')}
+          onPress={() => handleGoTo('Musicplayer')}
         />
         <MainBtn
           title="TENTANG PEMBUAT"
           image={Icon3}
-          // onPress={() => handleGoTo('')}
+          onPress={() => handleGoTo('Tentang')}
         />
       </View>
-    </View>
+      {/* </View> */}
+    </LinearGradient>
   );
 };
 
@@ -36,8 +41,9 @@ export default Mainmenu;
 
 const style = StyleSheet.create({
   latar: {
-    height: '100%',
-    backgroundColor: '#2D3142',
+    flex: 1,
+    // height: '100%',
+    // backgroundColor: '#2D3142',
   },
   fontcolor1: {
     color: '#EF8354',
@@ -52,6 +58,6 @@ const style = StyleSheet.create({
     marginBottom: 20,
     marginTop: '20%',
     weight: '40%',
-    resizeMode: 'contain',
+    // resizeMode: 'contain',
   },
 });
