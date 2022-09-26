@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {TouchableOpacity} from 'react-native';
 import Slider from '@react-native-community/slider';
 import play from '../../assets/png/play.png';
@@ -8,48 +8,22 @@ import next from '../../assets/png/next.png';
 import previous from '../../assets/png/previous.png';
 import songs from '../../model/data';
 import LinearGradient from 'react-native-linear-gradient';
-import {
-  Capability,
-  Event,
-  RepeatMode,
-  State,
-  usePlaybackState,
-  useProgress,
-  useTrackPlayerEvents,
-  TrackPlayer,
-} from 'react-native-track-player';
-
-const setupPlayer = async () => {
-  await TrackPlayer.setupPlayer();
-  await TrackPlayer.add(songs);
-};
-
-const togglePlayback = async playbackState => {
-  const currentTrack = await TrackPlayer.getCurrentTrack();
-
-  if (currentTrack != null) {
-    if (playbackState == State.Paused) {
-      await TrackPlayer.play();
-    } else {
-      await TrackPlayer.pause();
-    }
-  }
-};
+import TrackPlayer, {State} from 'react-native-track-player';
 
 const Musicplayer = () => {
-  // karek nyampe meni 8.49 file Create Complete Music Player App In React Native
+  const state = async () => {
+    await TrackPlayer.getState();
+  };
+  // Pembacaan Flatlist Lirik
   const renderSongs = ({item, index}) => {
     return (
       <View style={style.lirik}>
-        {/* isi lirik */}
-        {/* antara text atau gambar */}
-
-        <Image source={item.lyric} />
-        {/* <Webview source={item.lirik} /> */}
+        <Text source={item.title} />
       </View>
     );
   };
 
+  // Tampilan dan Fungsi Tombol
   return (
     <LinearGradient colors={['#243B55', '#141E30']} style={style.container}>
       <View style={style.maincontainer}>
@@ -69,7 +43,7 @@ const Musicplayer = () => {
           />
         </View>
         {/* Info Lagu */}
-        <View style={{alignItems: 'center'}}>
+        <View style={style.center}>
           <Text style={style.title}>JUDUL LAGU</Text>
           <Text style={style.artist}>Penyanyi</Text>
           <Text style={style.artist}>Cipt:</Text>
@@ -100,7 +74,7 @@ const Musicplayer = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              alert('Tombol Play dan Pause');
+              // alert('Tombol Play dan Pause');
             }}>
             {/* Start/Pause */}
             <Image source={play} />
@@ -134,6 +108,9 @@ const style = StyleSheet.create({
     height: '100%',
     backgroundColor: '#2D3142',
   },
+  center: {
+    alignItems: 'center',
+  },
   judul: {
     marginTop: 20,
     marginBottom: 20,
@@ -158,15 +135,6 @@ const style = StyleSheet.create({
     width: '90%',
     padding: 15,
   },
-  // lirik: {
-  //   // flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   margin: 10,
-  //   backgroundColor: '#FFF',
-  //   borderRadius: 15,
-  //   // width: '100%',
-  // },
   progressbar: {
     width: '95%',
     height: 40,
