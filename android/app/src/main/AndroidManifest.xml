@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.musicplayer">
+  package="com.wcs.pantingmusicplayer">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Image} from 'react-native';
 import React, {useEffect} from 'react';
 // import Svg, {Use, Image} from 'react-native-svg';
 import Icon from '../../assets/png/music.png';

@@ -1,160 +1,367 @@
-import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
-import React, {useEffect} from 'react';
-import {TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  ScrollView,
+  Animated,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Slider from '@react-native-community/slider';
-import play from '../../assets/png/play.png';
-import pause from '../../assets/png/pause.png';
-import next from '../../assets/png/next.png';
-import previous from '../../assets/png/previous.png';
 import songs from '../../model/data';
-import LinearGradient from 'react-native-linear-gradient';
-import TrackPlayer, {State} from 'react-native-track-player';
+import TrackPlayer, {
+  Event,
+  RepeatMode,
+  State,
+  usePlaybackState,
+  useProgress,
+  useTrackPlayerEvents,
+} from 'react-native-track-player';
+
+// Menentukan lebar layar otomatis
+const {width} = Dimensions.get('window');
+// menginisiasi Track Player
+const setUpPlayer = async () => {
+  try {
+    await TrackPlayer.setupPlayer();
+    await TrackPlayer.add(songs);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Memfungsikan Play dan Pause
+const togglePlayback = async playbackState => {
+  const currentTrack = await TrackPlayer.getCurrentTrack();
+
+  if (currentTrack != null) {
+    if (playbackState == State.Playing) {
+      // console.log(
+      //   `currentTrack ${currentTrack}, playbackState ${playbackState}, State.Paused ${State.Paused}`,
+      // );
+      await TrackPlayer.pause();
+    } else {
+      await TrackPlayer.play();
+    }
+  }
+};
 
 const Musicplayer = () => {
-  const state = async () => {
-    await TrackPlayer.getState();
-  };
-  // Pembacaan Flatlist Lirik
-  const renderSongs = ({item, index}) => {
-    return (
-      <View style={style.lirik}>
-        <Text source={item.title} />
-      </View>
-    );
+  const playbackState = usePlaybackState();
+  const progress = useProgress();
+  const [songIndex, setsongIndex] = useState(0);
+  const [repeatMode, setRepeatMode] = useState('off');
+  const [trackTitle, setTrackTitle] = useState();
+  const [trackArtist, setTrackArtist] = useState();
+  const [trackCreated, setTrackCreated] = useState();
+  const [trackArtwork, setTrackArtwork] = useState();
+
+  //untuk membuat judul,artist dan pencipta lagu berganti otomatis mengikuti lirik
+  const scrollX = useRef(new Animated.Value(0)).current;
+
+  // Fungsi Song Slider
+  const songSlider = useRef(null); //Flatlist references
+
+  // ganti lagu saat next / previous saat selesai
+  useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
+    if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null) {
+      const track = await TrackPlayer.getTrack(event.nextTrack);
+      const {title, artwork, artist, created} = track;
+      setTrackArtwork(artwork);
+      setTrackTitle(title);
+      setTrackArtist(artist);
+      setTrackCreated(created);
+    }
+  });
+
+  const repeatIcon = () => {
+    if (repeatMode == 'off') {
+      return 'repeat-off';
+    }
+    if (repeatMode == 'track') {
+      return 'repeat-once';
+    }
+    if (repeatMode == 'repeat') {
+      return 'repeat';
+    }
   };
 
-  // Tampilan dan Fungsi Tombol
+  const changeRepeatMode = () => {
+    if (repeatMode == 'off') {
+      TrackPlayer.setRepeatMode(RepeatMode.Track);
+      setRepeatMode('track');
+    }
+    if (repeatMode == 'track') {
+      TrackPlayer.setRepeatMode(RepeatMode.Queue);
+      setRepeatMode('repeat');
+    }
+    if (repeatMode == 'repeat') {
+      TrackPlayer.setRepeatMode(RepeatMode.Off);
+      setRepeatMode('off');
+    }
+  };
+
+  const skipTo = async TrackId => {
+    await TrackPlayer.skip(TrackId);
+  };
+
+  useEffect(() => {
+    setUpPlayer();
+    scrollX.addListener(({value}) => {
+      // rconsole.log(`ScrollX: ${value} | Device width: ${ width}`);
+      const index = Math.round(value / width);
+      skipTo(index);
+      setsongIndex(index);
+      // console.log(index);
+    });
+    return () => {
+      scrollX.removeAllListeners();
+      // TrackPlayer.destroy();
+    };
+  });
+
+  // Skip ke lagu selanjutnya
+  const skipToNext = () => {
+    songSlider.current.scrollToOffset({
+      offset: (songIndex + 1) * width,
+    });
+  };
+
+  const skipToPrev = () => {
+    songSlider.current.scrollToOffset({
+      offset: (songIndex - 1) * width,
+    });
+  };
+
+  // Rendersong untuk Flatlist
+  const renderSongs = ({item, index}) => {
+    return (
+      <Animated.View style={style.mainImageWrapper}>
+        <ScrollView style={style.imageWrapper}>
+          <Image source={trackArtwork} style={style.musicImage} />
+        </ScrollView>
+      </Animated.View>
+    );
+  };
   return (
-    <LinearGradient colors={['#243B55', '#141E30']} style={style.container}>
-      <View style={style.maincontainer}>
-        {/* <Text style={style.judul}>KUMPULAN MUSIK PANTING</Text> */}
+    <SafeAreaView style={style.container}>
+      <View style={style.judulWrapper}>
         <Text style={style.judul}>WILKIE MUSIC PLAYER</Text>
-        <View style={style.lyriccontainer}>
-          {/* <WebView source={{uri: '../../assets/lirik/Bahiburdiri.html'}} /> */}
-          <FlatList
-            renderItem={renderSongs}
-            data={songs}
-            keyExtractor={item => item.id}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            scrollEventThrottle={16}
-            onScroll={() => {}}
+        {/* <Text style={style.judul}>PANTING MUSIC PLAYER</Text> */}
+      </View>
+      <View style={style.maincontainer}>
+        {/* Lyric */}
+        <Animated.FlatList
+          ref={songSlider}
+          renderItem={renderSongs}
+          data={songs}
+          keyExtractor={item => item.id}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={16}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {x: scrollX},
+                },
+              },
+            ],
+            {useNativeDriver: true},
+          )}
+        />
+        {/* Song Content */}
+        <View>
+          <Text style={[style.songContent, style.songTitle]}>{trackTitle}</Text>
+          <Text style={[style.songContent, style.songArtist]}>
+            {trackArtist}
+          </Text>
+          <Text style={[style.songContent, style.songArtist]}>
+            Cipt: {trackCreated}
+          </Text>
+        </View>
+
+        {/* Slider */}
+        <View>
+          <Slider
+            style={style.progressbar}
+            value={progress.position}
+            minimumValue={0}
+            maximumValue={progress.duration}
+            thumbTintColor="#EF8354"
+            minimumTrackTintColor="#fff"
+            maximumTrackTintColor="gray"
+            onSlidingComplete={async value => {
+              await TrackPlayer.seekTo(value);
+            }}
           />
         </View>
-        {/* Info Lagu */}
-        <View style={style.center}>
-          <Text style={style.title}>JUDUL LAGU</Text>
-          <Text style={style.artist}>Penyanyi</Text>
-          <Text style={style.artist}>Cipt:</Text>
-        </View>
-        {/* SLIDER  */}
-        <Slider
-          style={style.progressbar}
-          minimumValue={0}
-          maximumValue={100}
-          minimumTrackTintColor="#EF8354"
-          maximumTrackTintColor="#FFF"
-          thumbTintColor="#EF8354"
-          onSlidingComplete={() => {}}
-        />
-        {/* Durasi Progress */}
+
+        {/* music Progress Duration */}
         <View style={style.progressLevelDuration}>
-          <Text style={style.progressLabelText}>00:00</Text>
-          <Text style={style.progressLabelText}>00:00</Text>
+          <Text style={style.progressLabelText}>
+            {new Date(progress.position * 1000)
+              .toLocaleTimeString()
+              .substring(3)}
+          </Text>
+          <Text style={style.progressLabelText}>
+            {new Date((progress.duration - progress.position) * 1000)
+              .toLocaleTimeString()
+              .substring(3)}
+          </Text>
         </View>
-        {/* MUSIC CONTROL */}
+        {/* Controls */}
         <View style={style.musicControlContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              alert('Tombol Previous');
-            }}>
-            {/* Previous */}
-            <Image source={previous} />
+          <TouchableOpacity onPress={skipToPrev}>
+            <Ionicons name="play-skip-back-outline" size={30} color="#EF8354" />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              // alert('Tombol Play dan Pause');
-            }}>
-            {/* Start/Pause */}
-            <Image source={play} />
+          <TouchableOpacity onPress={() => togglePlayback(playbackState)}>
+            <Ionicons
+              name={
+                playbackState === State.Playing
+                  ? 'ios-pause-circle'
+                  : 'ios-play-circle'
+              }
+              size={75}
+              color="#EF8354"
+            />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              alert('Tombol Next');
-            }}>
-            {/* Next */}
-            <Image source={next} />
+          <TouchableOpacity onPress={skipToNext}>
+            <Ionicons
+              name="play-skip-forward-outline"
+              size={30}
+              color="#EF8354"
+            />
           </TouchableOpacity>
         </View>
       </View>
-    </LinearGradient>
+      <View style={style.bottomcontainer}>
+        <View style={style.bottomIconWrapper}>
+          <TouchableOpacity
+            onPress={() => {
+              // TrackPlayer.pause();
+              alert('Tombol Share');
+            }}>
+            <Ionicons name="md-share-social-outline" size={25} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={changeRepeatMode}>
+            <MaterialCommunityIcons
+              name={`${repeatIcon()}`}
+              size={25}
+              color={repeatMode !== 'off' ? 'white' : 'gray'}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              alert('Tombol Playlist');
+            }}>
+            <Ionicons name="menu-outline" size={25} color="white" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
 export default Musicplayer;
 
 const style = StyleSheet.create({
+  judulWrapper: {
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  judul: {
+    color: '#EF8354',
+    fontWeight: 'bold',
+    fontSize: 30,
+  },
   container: {
     flex: 1,
     backgroundColor: '#2D3142',
   },
   maincontainer: {
-    alignItems: 'center',
     flex: 1,
-    justifyContent: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  latar: {
-    height: '100%',
-    backgroundColor: '#2D3142',
+  bottomcontainer: {
+    width: width,
+    alignItems: 'center',
+    paddingVertical: 15,
+    borderTopColor: '#393e46',
+    borderWidth: 1,
   },
-  center: {
+  bottomIconWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+  },
+  mainImageWrapper: {
+    width: width,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  judul: {
-    marginTop: 20,
-    marginBottom: 20,
-    color: '#FFF',
-    fontSize: 20,
-    fontWeight: 'bold',
+  imageWrapper: {
+    width: '75%',
+    height: '100%',
+    resizeMode: 'contain',
+    // margin: 25,
+    // backgroundColor: 'blue',
   },
-  title: {
+  musicImage: {
+    width: '100%',
+  },
+  scrollLirik: {
+    width: 300,
+    height: 300,
+  },
+  elevation: {
+    elevation: 5,
+    shadowColor: '#ccc',
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 0.5,
+    shadowRadius: 3.84,
+  },
+  songContent: {
+    textAlign: 'center',
+  },
+  songTitle: {
+    fontSize: 25,
     fontWeight: 'bold',
     color: '#EF8354',
+  },
+  songArtist: {
     fontSize: 18,
-    marginTop: 10,
-  },
-  artist: {
-    color: '#FFF',
-    fontSize: 15,
-    marginTop: 5,
-  },
-  lyriccontainer: {
-    flex: 1,
-    backgroundColor: 'green',
-    width: '90%',
-    padding: 15,
+    fontWeight: 'bold',
+    color: '#EEE',
   },
   progressbar: {
-    width: '95%',
-    height: 40,
-    marginTop: 20,
+    width: 350,
+    height: 30,
+    marginTop: 25,
     flexDirection: 'row',
   },
   progressLevelDuration: {
-    width: '85%',
+    width: 320,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   progressLabelText: {
-    color: 'white',
-    fontWeight: '15',
+    color: '#fff',
+    fontWeight: 'bold',
   },
   musicControlContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '60%',
-    margin: 20,
+    marginTop: 20,
   },
 });

@@ -1,10 +1,11 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import React from 'react';
 import Icon from '../../assets/png/music.png';
 import MainBtn from './MainBtn';
 import Icon1 from '../../assets/png/icon1.png';
 import Icon2 from '../../assets/png/icon2.png';
 import Icon3 from '../../assets/png/icon3.png';
+// import decor from '../../assets/png/deco1.png';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Mainmenu = ({navigation}) => {
@@ -32,6 +33,7 @@ const Mainmenu = ({navigation}) => {
           onPress={() => handleGoTo('Tentang')}
         />
       </View>
+      {/* <Image source={decor} style={style.icon1} /> */}
       {/* </View> */}
     </LinearGradient>
   );
@@ -55,9 +57,10 @@ const style = StyleSheet.create({
     height: 190,
   },
   icon: {
-    marginBottom: 20,
-    marginTop: '20%',
+    marginBottom: 80,
+    marginTop: '30%',
     weight: '40%',
     // resizeMode: 'contain',
   },
+  icon1: {},
 });

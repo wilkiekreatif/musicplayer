@@ -1,4 +1,4 @@
-import {Text, View, Image, StyleSheet} from 'react-native';
+import {Text, Image, StyleSheet} from 'react-native';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -35,8 +35,11 @@ const style = StyleSheet.create({
   btnfont: {
     color: '#EF8354',
     marginLeft: 20,
-    fontSize: 15,
+    fontSize: 25,
     fontWeight: 'bold',
     flex: 1,
+  },
+  logo: {
+    margin: 5,
   },
 });

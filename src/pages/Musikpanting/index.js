@@ -50,10 +50,9 @@ const style = StyleSheet.create({
     borderRadius: 15,
     height: '87%',
     width: '90%',
-    // padding: -10,
   },
   pdf: {
-    borderRadius: 50,
+    borderRadius: 15,
     backgroundColor: '#FFF',
     width: '100%',
     height: '100%',
