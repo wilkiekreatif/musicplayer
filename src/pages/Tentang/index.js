@@ -181,7 +181,7 @@ const style = StyleSheet.create({
   judul: {
     color: '#EF8354',
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 25,
   },
   pendidikan: {
     paddingHorizontal: 10,

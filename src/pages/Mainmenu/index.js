@@ -58,8 +58,8 @@ const style = StyleSheet.create({
   },
   icon: {
     marginBottom: 80,
-    marginTop: '30%',
-    weight: '40%',
+    marginTop: '20%',
+    weight: '30%',
     // resizeMode: 'contain',
   },
   icon1: {},

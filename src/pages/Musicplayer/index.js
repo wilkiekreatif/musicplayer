@@ -280,7 +280,7 @@ const style = StyleSheet.create({
   judul: {
     color: '#EF8354',
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 20,
   },
   container: {
     flex: 1,
@@ -333,12 +333,12 @@ const style = StyleSheet.create({
     textAlign: 'center',
   },
   songTitle: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#EF8354',
   },
   songArtist: {
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#EEE',
   },

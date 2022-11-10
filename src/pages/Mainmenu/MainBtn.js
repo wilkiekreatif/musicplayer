@@ -22,7 +22,7 @@ const style = StyleSheet.create({
     width: 300,
     paddingVertical: 3,
     // borderRadius: 15,
-    marginBottom: 15,
+    marginBottom: 10,
     // borderRadius: 50,
   },
   btnstyle: {
@@ -35,7 +35,7 @@ const style = StyleSheet.create({
   btnfont: {
     color: '#EF8354',
     marginLeft: 20,
-    fontSize: 25,
+    fontSize: 13,
     fontWeight: 'bold',
     flex: 1,
   },
