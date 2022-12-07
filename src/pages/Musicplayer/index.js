@@ -51,7 +51,10 @@ const togglePlayback = async playbackState => {
   }
 };
 
-const Musicplayer = () => {
+const Musicplayer = ({navigation}) => {
+  const handleGoTo = screen => {
+    navigation.navigate(screen);
+  };
   const playbackState = usePlaybackState();
   const progress = useProgress();
   const [songIndex, setsongIndex] = useState(0);
@@ -243,12 +246,12 @@ const Musicplayer = () => {
       </View>
       <View style={style.bottomcontainer}>
         <View style={style.bottomIconWrapper}>
-          <TouchableOpacity
-            onPress={() => {
-              // TrackPlayer.pause();
-              alert('Tombol Share');
-            }}>
-            <Ionicons name="md-share-social-outline" size={25} color="white" />
+          <TouchableOpacity onPress={() => handleGoTo('MusikPanting')}>
+            <MaterialCommunityIcons
+              name="information-outline"
+              size={25}
+              color="white"
+            />
           </TouchableOpacity>
           <TouchableOpacity onPress={changeRepeatMode}>
             <MaterialCommunityIcons
@@ -257,11 +260,12 @@ const Musicplayer = () => {
               color={repeatMode !== 'off' ? 'white' : 'gray'}
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              alert('Tombol Playlist');
-            }}>
-            <Ionicons name="menu-outline" size={25} color="white" />
+          <TouchableOpacity onPress={() => handleGoTo('Playlist')}>
+            <MaterialCommunityIcons
+              name="playlist-music-outline"
+              size={25}
+              color="white"
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -281,6 +285,7 @@ const style = StyleSheet.create({
     color: '#EF8354',
     fontWeight: 'bold',
     fontSize: 20,
+    marginBottom: 10,
   },
   container: {
     flex: 1,
@@ -305,22 +310,19 @@ const style = StyleSheet.create({
   },
   mainImageWrapper: {
     width: width,
-    justifyContent: 'center',
+    marginBottom: 20,
+    // backgroundColor: 'blue',
+    // justifyContent: 'center',
     alignItems: 'center',
   },
   imageWrapper: {
-    width: '75%',
-    height: '100%',
-    resizeMode: 'contain',
-    // margin: 25,
-    // backgroundColor: 'blue',
+    width: width - 40,
+    // justifyContent: 'center',
   },
   musicImage: {
-    width: '100%',
-  },
-  scrollLirik: {
-    width: 300,
-    height: 300,
+    // alignItems: 'center',
+    // alignContent: 'center',
+    // justifyContent: 'center',
   },
   elevation: {
     elevation: 5,

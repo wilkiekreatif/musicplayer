@@ -1,6 +1,13 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Splash, Mainmenu, Musicplayer, MusikPanting, Tentang} from '../pages';
+import {
+  Splash,
+  Mainmenu,
+  Musicplayer,
+  MusikPanting,
+  Tentang,
+  Playlist,
+} from '../pages';
 
 const Stack = createNativeStackNavigator();
 const Router = () => {
@@ -29,6 +36,11 @@ const Router = () => {
       <Stack.Screen
         name="Tentang"
         component={Tentang}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Playlist"
+        component={Playlist}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
