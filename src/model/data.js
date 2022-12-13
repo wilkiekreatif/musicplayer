@@ -2,7 +2,7 @@ const songs = [
   {
     id: 1,
     url: require('../assets/audio/01_Ruhui_Rahayu.mp3'),
-    title: 'Ruhui Rahayu',
+    title: 'RUHUI RAHAYU',
     artist: 'Fataya Putri Cinta Ariyanto Abdur dan Miranty Karima',
     created: 'Muhammad Marwan, S.Pd',
     artwork: require('../assets/lirik/1_Ruhui_Rahayu.png'),
@@ -11,7 +11,7 @@ const songs = [
   {
     id: 2,
     url: require('../assets/audio/02_Awal_Bamula.mp3'),
-    title: 'Awal Bamula',
+    title: 'AWAL BAMULA',
     artist: 'Fataya Putri Cinta Ariyanto Abdur dan Miranty Karima',
     created: 'Muhammad Marwan, S.Pd',
     artwork: require('../assets/lirik/2_Awal_Bamula.png'),
@@ -20,7 +20,7 @@ const songs = [
   {
     id: 3,
     url: require('../assets/audio/03_Bahibur_Diri.mp3'),
-    title: 'Bahibur Diri',
+    title: 'BAHIBUR DIRI',
     artist: 'Fataya Putri Cinta Ariyanto Abdur dan Miranty Karima',
     created: 'Muhammad Marwan, S.Pd',
     artwork: require('../assets/lirik/3_Bahibur_Diri.png'),
@@ -29,7 +29,7 @@ const songs = [
   {
     id: 4,
     url: require('../assets/audio/04_Baturai_Nyanyi.mp3'),
-    title: 'Baturai Nyanyi',
+    title: 'BATURAI NYANYI',
     artist: 'Fataya Putri Cinta Ariyanto Abdur dan Miranty Karima',
     created: 'Muhammad Marwan, S.Pd',
     artwork: require('../assets/lirik/4_Baturai_Nyanyi.png'),
@@ -38,7 +38,7 @@ const songs = [
   {
     id: 5,
     url: require('../assets/audio/05_Barasa_rasa.mp3'),
-    title: 'Barasa Rasa',
+    title: 'BARASA RASA',
     artist: 'Fataya Putri Cinta Ariyanto Abdur dan Miranty Karima',
     created: 'Muhammad Marwan, S.Pd',
     artwork: require('../assets/lirik/5_Barasa_Rasa.png'),
@@ -47,7 +47,7 @@ const songs = [
   {
     id: 6,
     url: require('../assets/audio/06_Ditiwas_Jadi.mp3'),
-    title: 'Ditiwas Jadi',
+    title: 'DITIWAS JADI',
     artist: 'Fataya Putri Cinta Ariyanto Abdur dan Miranty Karima',
     created: 'Muhammad Marwan, S.Pd',
     artwork: require('../assets/lirik/6_Ditiwas_Jadi.png'),
@@ -56,7 +56,7 @@ const songs = [
   {
     id: 7,
     url: require('../assets/audio/07_Sudah_JanjiNya.mp3'),
-    title: 'Sudah JanjiNya',
+    title: 'SUDAH JANJINYA',
     artist: 'Fataya Putri Cinta Ariyanto Abdur dan Miranty Karima',
     created: 'Muhammad Marwan, S.Pd',
     artwork: require('../assets/lirik/7_Sudah_Janjinya.png'),
